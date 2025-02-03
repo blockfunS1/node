@@ -1,137 +1,31 @@
-services:
-
-
-
-  wings:
-
-
-
-    image: ghcr.io/pterodactyl/wings:v1.6.1
-
-
-
-    restart: always
-
-
-
-    networks:
-
-
-
-      - wings0
-
-
-
-    ports:
-
-
-
-      - "8080:8080"
-
-
-
-      - "2022:2022"
-
-
-
-      - "443:443"
-
-
-
-    tty: true
-
-
-
-    environment:
-
-
-
-      TZ: "UTC"
-
-
-
-      WINGS_UID: 988
-
-
-
-      WINGS_GID: 988
-
-
-
-      WINGS_USERNAME: pterodactyl
-
-
-
-    volumes:
-
-
-
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
-
-
-      - "/var/lib/docker/containers/:/var/lib/docker/containers/"
-
-
-
-      - "/etc/pterodactyl/:/etc/pterodactyl/"
-
-
-
-      - "/var/lib/pterodactyl/:/var/lib/pterodactyl/"
-
-
-
-      - "/var/log/pterodactyl/:/var/log/pterodactyl/"
-
-
-
-      - "/tmp/pterodactyl/:/tmp/pterodactyl/"
-
-
-
-      - "/etc/ssl/certs:/etc/ssl/certs:ro"
-
-
-
-      # you may need /srv/daemon-data if you are upgrading from an old daemon
-
-
-
-      #- "/srv/daemon-data/:/srv/daemon-data/"
-
-
-
-      # Required for ssl if you use let's encrypt. uncomment to use.
-
-
-
-      #- "/etc/letsencrypt/:/etc/letsencrypt/"
-
-
-
-networks:
-
-
-
-  wings0:
-
-
-
-    name: wings0
-
-
-
-    driver: bridge
-
-
-
-    ipam:
-
-
-
-      config:
-
-
-
-        - subnet: "172.21.0.0/16"
+SkyExo-Wings/
+│── cmd/                  # CLI commands ka implementation (start, stop, restart, etc.)
+│── config/               # Configuration files (YAML, JSON)
+│── docker/               # Docker container scripts
+│── logs/                 # Server logs store karne ke liye folder
+│── scripts/              # Installation & update scripts
+│── services/             # Game server management logic
+│── systemd/              # Linux service files (skyexo-wings.service)
+│── utils/                # Helper functions (network, firewall, etc.)
+│── .gitignore            # Unnecessary files ignore karne ke liye
+│── config.yml            # Main configuration file
+│── daemon.go (or daemon.py)  # Daemon service ka main file (Golang/Python)
+│── Dockerfile            # Daemon ko containerized karne ke liye
+│── LICENSE               # Open-source license
+│── README.md             # Project ka documentation
+
+panel_url: "https://skyexo-panel.com"
+daemon_port: 8080
+docker_network: "skyexo_network"
+
+image: "itzg/minecraft-server"
+ports:
+  - "25565:25565"
+  
+memory: "2GB"
+#!/bin/bash
+echo "Installing SkyExo Wings..."
+mkdir -p /etc/skyexo
+curl -Lo /usr/local/bin/skyexo-wings https://your-repo.com/wings
+chmod +x /usr/local/bin/skyexo-wings
+echo "Installation complete!"
